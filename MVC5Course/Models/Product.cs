@@ -27,6 +27,7 @@ namespace MVC5Course.Models
         [StringLength(10, ErrorMessage = "商品名不得大於10個字元")]
         public string ProductName { get; set; }
         [Required]
+        [DisplayFormat(DataFormatString = "{0:N0}")] // 不要小數點
         public Nullable<decimal> Price { get; set; }
         [Required]
         public Nullable<bool> Active { get; set; }

@@ -17,7 +17,25 @@ namespace MVC5Course.Controllers
         // GET: Products
         public ActionResult Index()
         {
+            // 資料存進data
             var data = db.Product.OrderByDescending(p=>p.ProductId).Take(10).ToList();
+            // 把資料傳回前端
+            return View(data);
+        }
+
+        public ActionResult Index2()
+        {
+            var data = db.Product
+                .Where(p => p.Active == true)
+                .OrderByDescending(p => p.ProductId)
+                .Take(10)
+                .Select(p => new ProductViewModel()
+                {
+                    ProductName = p.ProductName,
+                    ProductId = p.ProductId,
+                    Price = p.Price,
+                    Stock = p.Stock
+                });
 
             return View(data);
         }
