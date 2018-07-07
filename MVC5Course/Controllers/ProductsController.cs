@@ -44,6 +44,7 @@ namespace MVC5Course.Controllers
             return View(data);
         }
 
+
         public ActionResult AddNewProduct()
         {
             return View();
@@ -58,10 +59,49 @@ namespace MVC5Course.Controllers
                 return View();
             }
 
-            // TODO
+            var product = new Product()
+            {
+                // 轉(productId會自動編號，所以不管打什麼都可以)
+                ProductId = data.ProductId,
+                Active = true,
+                Price = data.Price,
+                Stock = data.Stock,
+                ProductName = data.ProductName
+            };
+            this.db.Product.Add(product); // 對物件集合進行操作(記憶體作業)
+            this.db.SaveChanges(); // 寫進db
+
 
             return RedirectToAction("Index2");
         }
+
+        public ActionResult EditOne(int id)
+        {
+            // 先把資料準備好(先寫action再寫view)
+            var data = db.Product.Find(id);
+
+            return View(data);
+        }
+
+        [HttpPost]
+        public ActionResult EditOne(int id, ProductViewModel data)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(data);
+            }
+
+            var one = db.Product.Find(id);
+
+            one.ProductName = data.ProductName;
+            one.Stock = data.Stock;
+            one.Price = data.Price;
+
+            db.SaveChanges();
+
+            return RedirectToAction("Index2");
+        }
+
 
         // GET: Products/Details/5
         public ActionResult Details(int? id)
