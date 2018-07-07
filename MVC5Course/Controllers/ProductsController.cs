@@ -106,6 +106,23 @@ namespace MVC5Course.Controllers
             return RedirectToAction("Index2");
         }
 
+        public ActionResult DeleteOne(int id)
+        {
+
+            var item = db.Product.Find(id);
+
+            if (item==null)
+            {
+                return HttpNotFound();
+            }
+
+            // 先找出全部的集合，再從集合中刪掉一筆(記憶體作業)
+            db.Product.Remove(item);
+
+            db.SaveChanges();
+
+            return RedirectToAction("Index2");
+        }
 
         // GET: Products/Details/5
         public ActionResult Details(int? id)
