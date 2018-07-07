@@ -18,13 +18,17 @@ namespace MVC5Course.Controllers
         public ActionResult Index()
         {
             // 資料存進data
-            var data = db.Product.OrderByDescending(p=>p.ProductId).Take(10).ToList();
+            var data = db.Product
+                .OrderByDescending(p=>p.ProductId)
+                .Take(10)
+                .ToList();
             // 把資料傳回前端
             return View(data);
         }
 
         public ActionResult Index2()
         {
+            // 透過程式把資料從model搬到ViewModel
             var data = db.Product
                 .Where(p => p.Active == true)
                 .OrderByDescending(p => p.ProductId)
@@ -38,6 +42,25 @@ namespace MVC5Course.Controllers
                 });
 
             return View(data);
+        }
+
+        public ActionResult AddNewProduct()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddNewProduct(ProductViewModel data)
+        {
+            if (!ModelState.IsValid)
+            {
+
+                return View();
+            }
+
+            // TODO
+
+            return RedirectToAction("Index2");
         }
 
         // GET: Products/Details/5
