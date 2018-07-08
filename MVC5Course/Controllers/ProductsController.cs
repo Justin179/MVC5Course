@@ -18,18 +18,15 @@ namespace MVC5Course.Controllers
         // GET: Products
         public ActionResult Index()
         {
-            // 資料存進data
             var data = db.Product
-                .OrderByDescending(p=>p.ProductId)
+                .OrderByDescending(p => p.ProductId)
                 .Take(10)
                 .ToList();
-            // 把資料傳回前端
             return View(data);
         }
 
         public ActionResult Index2()
         {
-            // 透過程式把資料從model搬到ViewModel
             var data = db.Product
                 .Where(p => p.Active == true)
                 .OrderByDescending(p => p.ProductId)
@@ -44,7 +41,6 @@ namespace MVC5Course.Controllers
 
             return View(data);
         }
-
 
         public ActionResult AddNewProduct()
         {
@@ -62,23 +58,21 @@ namespace MVC5Course.Controllers
 
             var product = new Product()
             {
-                // 轉(productId會自動編號，所以不管打什麼都可以)
                 ProductId = data.ProductId,
                 Active = true,
                 Price = data.Price,
                 Stock = data.Stock,
                 ProductName = data.ProductName
             };
-            this.db.Product.Add(product); // 對物件集合進行操作(記憶體作業)
-            this.db.SaveChanges(); // 寫進db
 
+            db.Product.Add(product);
+            db.SaveChanges();
 
             return RedirectToAction("Index2");
         }
 
         public ActionResult EditOne(int id)
         {
-            // 先把資料準備好(先寫action再寫view)
             var data = db.Product.Find(id);
 
             return View(data);
@@ -94,7 +88,6 @@ namespace MVC5Course.Controllers
 
             var one = db.Product.Find(id);
 
-            // 很適合這種少的塞到多的的情況
             one.InjectFrom(data);
 
             //one.ProductName = data.ProductName;
@@ -108,17 +101,13 @@ namespace MVC5Course.Controllers
 
         public ActionResult DeleteOne(int id)
         {
-
             var item = db.Product.Find(id);
-
-            if (item==null)
+            if (item == null)
             {
                 return HttpNotFound();
             }
 
-            // 先找出全部的集合，再從集合中刪掉一筆(記憶體作業)
             db.Product.Remove(item);
-
             db.SaveChanges();
 
             return RedirectToAction("Index2");
