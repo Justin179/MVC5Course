@@ -21,6 +21,19 @@ namespace MVC5Course.Controllers
             return View(client.Take(10));
         }
 
+        public ActionResult Search(string keyword)
+        {
+            var client = db.Client.AsQueryable();
+
+            if (!String.IsNullOrEmpty(keyword))
+            {
+                client = client.Where(p => p.FirstName.Contains(keyword));
+            }
+
+            // 把資料丟到原本的Index
+            return View("Index", client);
+        }
+
         // GET: Clients/Details/5
         public ActionResult Details(int? id)
         {
