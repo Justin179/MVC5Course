@@ -15,7 +15,15 @@ namespace MVC5Course.Controllers
         }
         public ActionResult ViewTest()
         {
-            return View();
+            string str = "字串";
+            return View((object)str);
+        }
+
+        public ActionResult PartialViewTest()
+        {
+            string str = "Partial字串";
+            // PartialView的話，沒有layout
+            return PartialView("ViewTest", (object)str);
         }
 
     }
