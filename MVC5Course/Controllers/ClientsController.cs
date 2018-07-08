@@ -11,7 +11,7 @@ using MVC5Course.Models;
 namespace MVC5Course.Controllers
 {
     [RoutePrefix("clients")]
-    public class ClientsController : Controller
+    public class ClientsController : BaseController
     {
         ClientRepository repo;
         OccupationRepository occuRepo;
@@ -50,6 +50,25 @@ namespace MVC5Course.Controllers
                 return HttpNotFound();
             }
             return View(client);
+        }
+
+        [Route("{*name}")]
+        public ActionResult Details2(string name)
+        {
+            string[] names = name.Split('/');
+            string FirstName = names[0];
+            string MiddleName = names[1];
+            string LastName = names[2];
+
+            // 找不到…為何?
+            Client client = repo.All().FirstOrDefault(p => p.FirstName == FirstName && p.MiddleName == MiddleName && p.LastName == LastName);
+            //Client client = repo.All().FirstOrDefault(p => p.ClientId==3);
+
+            if (client == null)
+            {
+                return HttpNotFound();
+            }
+            return View("Details", client);
         }
 
         [Route("create")]
