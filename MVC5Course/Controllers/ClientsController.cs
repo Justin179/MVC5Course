@@ -32,8 +32,9 @@ namespace MVC5Course.Controllers
 
         [HttpPost]
         [Route("BatchUpdate")]
-        public ActionResult BatchUpdate(ClientBatchVM[] data)
+        public ActionResult BatchUpdate(ClientBatchVM[] data, PageCondVM page)
         {
+            //page.keyword
             //data[0].ClientId
 
             if (ModelState.IsValid)
@@ -46,7 +47,6 @@ namespace MVC5Course.Controllers
                     client.LastName = vm.LastName;
                 }
 
-                // db.SaveChanges(); // 要知道這一行那裡發生例外錯誤，要這麼麻煩才能看到錯誤
                 try
                 {
                     db.SaveChanges();
@@ -64,11 +64,6 @@ namespace MVC5Course.Controllers
 
                     return Content(String.Join(", ", errors.ToArray()));
                 }
-
-
-
-
-
 
                 return RedirectToAction("Index");
             }
@@ -169,14 +164,14 @@ namespace MVC5Course.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("edit/{id}")]
-        public ActionResult Edit([Bind(Include = "ClientId,FirstName,MiddleName,LastName,Gender,DateOfBirth,CreditRating,XCode,OccupationId,TelephoneNumber,Street1,Street2,City,ZipCode,Longitude,Latitude,Notes,IdNumber")]
-        Client client)
+        public ActionResult Edit(int id, FormCollection form)
         {
-            if (ModelState.IsValid)
+            var client = repo.Find(id);
+
+            // 在執行action才做model binding (排除FirstName, 不做model binding)
+            if (TryUpdateModel(client, "", null, new string[] { "FirstName" }))
             {
-                var db = repo.UnitOfWork.Context;
-                db.Entry(client).State = EntityState.Modified;
-                db.SaveChanges();
+                repo.UnitOfWork.Commit();
                 return RedirectToAction("Index");
             }
 
