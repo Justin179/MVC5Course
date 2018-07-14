@@ -16,6 +16,12 @@ namespace MVC5Course
             // 使用屬性路由
             routes.MapMvcAttributeRoutes();
 
+            //routes.MapRoute(
+            //    name: "DefaultName",
+            //    url: "MBinding/{name}",
+            //    defaults: new { controller = "MB", action = "MBinding" }
+            //);
+
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",

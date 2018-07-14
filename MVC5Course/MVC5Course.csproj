@@ -207,6 +207,7 @@
     <Compile Include="Models\IUnitOfWork.cs">
       <DependentUpon>IRepository.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\MyVM.cs" />
     <Compile Include="Models\Occupation.cs">
       <DependentUpon>Fabrics.tt</DependentUpon>
     </Compile>

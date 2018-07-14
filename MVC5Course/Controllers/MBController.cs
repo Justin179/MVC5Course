@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace MVC5Course.Controllers
 {
-    public class MBController : BaseController
+    public partial class MBController : BaseController
     {
         public ActionResult Index()
         {
@@ -18,6 +18,9 @@ namespace MVC5Course.Controllers
         public ActionResult ViewBagDemo()
         {
             ViewBag.Text = "Hi";
+
+            ViewData["Data"] = db.Client.Take(5).ToList();
+
             return View();
         }
         public ActionResult ViewDataDemo()
@@ -36,6 +39,17 @@ namespace MVC5Course.Controllers
         public ActionResult TempDataDemo()
         {
             return View();
+        }
+
+        public ActionResult MBinding(string name)
+        {
+            return Content(name);
+        }
+
+        [HttpPost]
+        public ActionResult FormTest(FormCollection form)
+        {
+            return View(form);
         }
     }
 }
