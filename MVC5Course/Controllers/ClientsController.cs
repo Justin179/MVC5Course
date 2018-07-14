@@ -29,6 +29,33 @@ namespace MVC5Course.Controllers
             return View(client.Take(10));
         }
 
+        [HttpPost]
+        [Route("BatchUpdate")]
+        public ActionResult BatchUpdate(ClientBatchVM[] data)
+        {
+            //data[0].ClientId
+
+            if (ModelState.IsValid)
+            {
+                foreach (var vm in data)
+                {
+                    var client = db.Client.Find(vm.ClientId);
+                    client.FirstName = vm.FirstName;
+                    client.MiddleName = vm.MiddleName;
+                    client.LastName = vm.LastName;
+                }
+
+                db.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+
+            ViewData.Model = repo.All().Take(10);
+
+            return View("Index");
+        }
+
+
         [Route("search")]
         public ActionResult Search(string keyword)
         {
@@ -60,9 +87,7 @@ namespace MVC5Course.Controllers
             string MiddleName = names[1];
             string LastName = names[2];
 
-            // 找不到…為何?
             Client client = repo.All().FirstOrDefault(p => p.FirstName == FirstName && p.MiddleName == MiddleName && p.LastName == LastName);
-            //Client client = repo.All().FirstOrDefault(p => p.ClientId==3);
 
             if (client == null)
             {
@@ -121,7 +146,8 @@ namespace MVC5Course.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("edit/{id}")]
-        public ActionResult Edit([Bind(Include = "ClientId,FirstName,MiddleName,LastName,Gender,DateOfBirth,CreditRating,XCode,OccupationId,TelephoneNumber,Street1,Street2,City,ZipCode,Longitude,Latitude,Notes,IdNumber")] Client client)
+        public ActionResult Edit([Bind(Include = "ClientId,FirstName,MiddleName,LastName,Gender,DateOfBirth,CreditRating,XCode,OccupationId,TelephoneNumber,Street1,Street2,City,ZipCode,Longitude,Latitude,Notes,IdNumber")]
+        Client client)
         {
             if (ModelState.IsValid)
             {
@@ -132,7 +158,12 @@ namespace MVC5Course.Controllers
             }
 
             ViewBag.OccupationId = new SelectList(occuRepo.All(), "OccupationId", "OccupationName", client.OccupationId);
-            return View(client);
+
+            //ModelState.Clear();
+            //ModelState.Remove("Latitude");
+
+            Client item = repo.Find(client.ClientId);
+            return View(item);
         }
 
         // GET: Clients/Delete/5
