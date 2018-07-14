@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -45,7 +46,29 @@ namespace MVC5Course.Controllers
                     client.LastName = vm.LastName;
                 }
 
-                db.SaveChanges();
+                // db.SaveChanges(); // 要知道這一行那裡發生例外錯誤，要這麼麻煩才能看到錯誤
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (DbEntityValidationException ex)
+                {
+                    List<string> errors = new List<string>();
+                    foreach (var vError in ex.EntityValidationErrors)
+                    {
+                        foreach (var err in vError.ValidationErrors)
+                        {
+                            errors.Add(err.PropertyName + ": " + err.ErrorMessage);
+                        }
+                    }
+
+                    return Content(String.Join(", ", errors.ToArray()));
+                }
+
+
+
+
+
 
                 return RedirectToAction("Index");
             }
