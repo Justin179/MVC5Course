@@ -1,7 +1,54 @@
-﻿@{
+﻿@using MVC5Course.Helpers
+@{
     ViewBag.Title = "About";
 }
 <h2>@ViewBag.Title.</h2>
 <h3>@ViewBag.Message</h3>
 
 <p>Use this area to provide additional information.</p>
+
+@functions {
+    public string GetRouteValue(string name)
+    {
+        return ViewContext.RouteData.Values[name]?.ToString();
+    }
+    public string GetModelStateValue(string name)
+    {
+        return ViewContext.ViewData.ModelState[name]?.Value.AttemptedValue;
+    }
+}
+
+
+@Model
+
+@*ModelState Values*@
+@*------------------------------------------------*@
+
+@*@ViewData.ModelState["id"].Value.AttemptedValue*@
+
+@GetModelStateValue("id")
+
+@this.GetModelStateValue2("id")
+
+@*Route Values*@
+@*------------------------------------------------*@
+
+@{ var routeValues = ViewContext.RouteData.Values; }
+@routeValues["action"].ToString()
+
+@GetRouteValue("action")
+
+@this.GetRouteValue2("id")
+
+@*HttpContext.Current.Items*@
+@*------------------------------------------------*@
+
+@HttpContext.Current.Items
+
+@*ViewContext*@
+@*------------------------------------------------*@
+
+@ViewContext.ViewData.Model
+@*@ViewContext.ViewData.ModelState["id"].Value.AttemptedValue*@
+@ViewContext.RouteData.Values["action"].ToString()
+@ViewContext.HttpContext.Items

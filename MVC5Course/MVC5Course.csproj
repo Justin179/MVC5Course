@@ -165,6 +165,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Utils.cs" />
     <Compile Include="Models\Client.cs">
       <DependentUpon>Fabrics.tt</DependentUpon>
     </Compile>
@@ -516,6 +517,7 @@
     <Content Include="Views\Razor\Dashboard.cshtml" />
     <Content Include="Views\Razor\_LayoutMetro.cshtml" />
     <Content Include="Views\Razor\_ViewStart.cshtml" />
+    <Content Include="Views\Clients\OrderList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Base\" />
