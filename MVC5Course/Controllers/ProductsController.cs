@@ -13,8 +13,6 @@ namespace MVC5Course.Controllers
 {
     public class ProductsController : BaseController
     {
-        private FabricsEntities db = new FabricsEntities();
-
         // GET: Products
         public ActionResult Index()
         {
@@ -177,7 +175,14 @@ namespace MVC5Course.Controllers
             {
                 db.Entry(product).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                if (Request.IsAjaxRequest())
+                {
+                    return new EmptyResult();
+                }
+                else
+                {
+                    return RedirectToAction("Index");
+                }
             }
             return View(product);
         }
@@ -199,13 +204,20 @@ namespace MVC5Course.Controllers
 
         // POST: Products/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             Product product = db.Product.Find(id);
             db.Product.Remove(product);
             db.SaveChanges();
-            return RedirectToAction("Index");
+
+            var data = db.Product
+                .OrderByDescending(p => p.ProductId)
+                .Take(10)
+                .ToList();
+            return View("Index", data);
+
+            //return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
