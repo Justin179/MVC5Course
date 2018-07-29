@@ -24,7 +24,7 @@
 @*ModelState Values*@
 @*------------------------------------------------*@
 
-@*@ViewData.ModelState["id"].Value.AttemptedValue*@
+@ViewData.ModelState["id"].Value.AttemptedValue
 
 @GetModelStateValue("id")
 
@@ -49,6 +49,6 @@
 @*------------------------------------------------*@
 
 @ViewContext.ViewData.Model
-@*@ViewContext.ViewData.ModelState["id"].Value.AttemptedValue*@
+@ViewContext.ViewData.ModelState["id"].Value.AttemptedValue
 @ViewContext.RouteData.Values["action"].ToString()
 @ViewContext.HttpContext.Items

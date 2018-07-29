@@ -9,28 +9,27 @@ namespace MVC5Course.Controllers
 {
     public class ARController : Controller
     {
-        // GET: AR
         public ActionResult Index()
         {
             return View();
         }
+
         public ActionResult ViewTest()
         {
-            string str = "字串";
-            return View((object)str);
+            string model = "My Data";
+            return View((object)model);
         }
 
         public ActionResult PartialViewTest()
         {
-            string str = "Partial字串";
-            // PartialView的話，沒有layout
-            return PartialView("ViewTest", (object)str);
+            string model = "My Data";
+            return PartialView("ViewTest", (object)model);
         }
 
         public ActionResult ContentTest()
         {
-            return Content("Test Content!",
-                "text/plain",
+            return Content("Test Content!", 
+                "text/plain", 
                 Encoding.GetEncoding("Big5"));
         }
 
@@ -38,15 +37,16 @@ namespace MVC5Course.Controllers
         {
             if (String.IsNullOrEmpty(dl))
             {
-                return File(Server.MapPath("~/App_Data/city_cafe.png"),
+                return File(Server.MapPath("~/App_Data/fifa-18-world-cup.jpg"),
                     "image/jpeg");
             }
             else
             {
-                return File(Server.MapPath("~/App_Data/city_cafe.png"),
-                    "image/jpeg", "xxx_cafe.png");
+                return File(Server.MapPath("~/App_Data/fifa-18-world-cup.jpg"),
+                    "image/jpeg", "My-FIFA-Picture.jpg");
             }
         }
+
 
     }
 }

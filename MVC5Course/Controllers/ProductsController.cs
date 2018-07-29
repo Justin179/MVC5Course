@@ -4,22 +4,24 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using MVC5Course.Models;
 using Omu.ValueInjecter;
+using X.PagedList;
 
 namespace MVC5Course.Controllers
 {
     public class ProductsController : BaseController
     {
         // GET: Products
-        public ActionResult Index()
+        public ActionResult Index(int pageNo = 1)
         {
             var data = db.Product
                 .OrderByDescending(p => p.ProductId)
-                .Take(10)
-                .ToList();
+                .ToPagedList(pageNumber: pageNo, pageSize: 10);
+
             return View(data);
         }
 
